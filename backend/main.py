@@ -15,18 +15,15 @@ app.add_middleware(
 class NotesRequest(BaseModel):
     notes: str
 
-
 @app.get("/")
 def home():
-    return {"message": "Taskify Backend Running"}
-
+    return {"message": "Taskify is working 🚀"}
 
 @app.post("/extract-tasks")
 def extract_tasks(data: NotesRequest):
 
     notes = data.notes
 
-    # simple working logic
     tasks = [t.strip() for t in notes.split(".") if t.strip()]
 
     return {

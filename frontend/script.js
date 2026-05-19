@@ -1,14 +1,10 @@
-const API_URL = "https://diagram-tcp-appears-asthma.trycloudflare.com";
-document.getElementById("extractBtn").addEventListener("click", extractTasks);
+const API_URL = "https://involvement-parliament-continent-consider.trycloudflare.com";
 
-async function extractTasks() {
+document.getElementById("extractBtn").addEventListener("click", async () => {
 
     const notes = document.getElementById("notes").value;
-    const resultDiv = document.getElementById("result");
 
-    resultDiv.innerHTML = "Processing...";
-
-    const response = await fetch(`${API_URL}/extract-tasks`, {
+    const res = await fetch(API_URL + "/extract-tasks", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -16,15 +12,9 @@ async function extractTasks() {
         body: JSON.stringify({ notes })
     });
 
-    const data = await response.json();
+    const data = await res.json();
 
-    resultDiv.innerHTML = `
-        <h3>📌 Clean Notes</h3>
-        <pre>${data.summary}</pre>
-
-        <h3>✅ Tasks</h3>
-        <ul>
-            ${data.tasks.map(t => `<li>${t}</li>`).join("")}
-        </ul>
-    `;
-}
+    document.getElementById("result").innerHTML =
+        "<h3>Tasks</h3>" +
+        data.tasks.map(t => `<p>• ${t}</p>`).join("");
+});
