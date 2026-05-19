@@ -4,7 +4,6 @@ from pydantic import BaseModel
 
 app = FastAPI()
 
-# Allow frontend requests
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -13,29 +12,46 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Request model
 class NotesRequest(BaseModel):
     notes: str
 
-# Home route
+
+# TEMP STORAGE (so app never fails)
+memory_db = []
+
+
 @app.get("/")
 def home():
     return {"message": "Taskify Backend Running"}
 
-# Extract tasks route
+
 @app.post("/extract-tasks")
 def extract_tasks(data: NotesRequest):
 
     notes = data.notes
 
-    lines = notes.split(".")
+    tasks = [s.strip() for s in notes.split(".") if s.strip()]
+    summary = "\n".join([f"• {t}" for t in tasks])
 
-    tasks = []
+    # store in memory (safe mode)
+    memory_db.append({
+        "notes": notes,
+        "summary": summary
+    })
 
-    for line in lines:
-        line = line.strip()
+    return {
+        "summary": summary,
+        "tasks": tasks
+    }
 
-        if line:
-            tasks.append(line)
 
-    return {"tasks": tasks}
+@app.get("/history")
+def history():
+
+    return [
+        {
+            "notes": item["notes"],
+            "summary": item["summary"]
+        }
+        for item in reversed(memory_db)
+    ]

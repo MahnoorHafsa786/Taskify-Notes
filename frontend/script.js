@@ -1,31 +1,31 @@
-const API_URL = "https://disciplinary-resulting-chapters-animated.trycloudflare.com";
-
-console.log("JS LOADED SUCCESSFULLY");
+const API_URL = "https://algorithms-technical-occupational-sure.trycloudflare.com";
 
 document.addEventListener("DOMContentLoaded", () => {
     const btn = document.getElementById("extractBtn");
 
-    console.log("Button found:", btn);
-
     if (!btn) {
-        alert("Button NOT found - HTML issue");
+        console.log("Button not found - check HTML id");
         return;
     }
 
     btn.addEventListener("click", extractTasks);
+
+    loadHistory();
 });
 
 async function extractTasks() {
-    console.log("BUTTON CLICKED");
 
-    const notes = document.getElementById("notes").value;
-    console.log("Notes:", notes);
-
+    const notesEl = document.getElementById("notes");
     const resultDiv = document.getElementById("result");
 
-    try {
-        resultDiv.innerHTML = "Processing...";
+    if (!notesEl) {
+        console.log("Notes input not found");
+        return;
+    }
 
+    const notes = notesEl.value;
+
+    try {
         const response = await fetch(`${API_URL}/extract-tasks`, {
             method: "POST",
             headers: {
@@ -34,25 +34,47 @@ async function extractTasks() {
             body: JSON.stringify({ notes })
         });
 
-        console.log("Response status:", response.status);
-
         const data = await response.json();
-        console.log("Data received:", data);
 
-        resultDiv.innerHTML = "<h3>Extracted Tasks</h3>";
+        resultDiv.innerHTML = `
+            <h3>Summary</h3>
+            <pre>${data.summary}</pre>
 
-        const ul = document.createElement("ul");
+            <h3>Tasks</h3>
+            <ul>
+                ${data.tasks.map(t => `<li>${t}</li>`).join("")}
+            </ul>
+        `;
 
-        (data.tasks || []).forEach(task => {
-            const li = document.createElement("li");
-            li.innerHTML = `<input type='checkbox'> ${task}`;
-            ul.appendChild(li);
+        loadHistory();
+
+    } catch (error) {
+        console.log("FETCH ERROR:", error);
+        resultDiv.innerHTML = "Backend not reachable ❌";
+    }
+}
+
+async function loadHistory() {
+
+    try {
+        const res = await fetch(`${API_URL}/history`);
+        const data = await res.json();
+
+        const div = document.getElementById("history");
+        if (!div) return;
+
+        div.innerHTML = "";
+
+        data.forEach(item => {
+            div.innerHTML += `
+                <div style="margin-bottom:10px;">
+                    <b>${item.time || ""}</b><br>
+                    ${item.summary}
+                </div>
+            `;
         });
 
-        resultDiv.appendChild(ul);
-
     } catch (err) {
-        console.error("ERROR:", err);
-        resultDiv.innerHTML = `<p style="color:red;">${err.message}</p>`;
+        console.log("History error:", err);
     }
 }
