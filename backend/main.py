@@ -23,9 +23,10 @@ def home():
 
 @app.post("/extract-tasks")
 def extract_tasks(data: NotesRequest):
+
     notes = data.notes
 
-    # SIMPLE WORKING LOGIC (same as before)
+    # simple working logic
     tasks = [t.strip() for t in notes.split(".") if t.strip()]
 
     return {

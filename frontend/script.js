@@ -1,37 +1,30 @@
-const API_URL = "https://available-hobby-wallpaper-relate.trycloudflare.com";
+const API_URL = "https://diagram-tcp-appears-asthma.trycloudflare.com";
+document.getElementById("extractBtn").addEventListener("click", extractTasks);
 
-console.log("JS LOADED OK");
+async function extractTasks() {
 
-document.addEventListener("DOMContentLoaded", () => {
+    const notes = document.getElementById("notes").value;
+    const resultDiv = document.getElementById("result");
 
-    const btn = document.getElementById("extractBtn");
+    resultDiv.innerHTML = "Processing...";
 
-    console.log("Button:", btn);
-
-    btn.addEventListener("click", async () => {
-
-        console.log("CLICK WORKS");
-
-        const notes = document.getElementById("notes").value;
-
-        try {
-            const res = await fetch(API_URL + "/extract-tasks", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ notes })
-            });
-
-            const data = await res.json();
-
-            document.getElementById("result").innerHTML =
-                "<h3>Tasks</h3>" +
-                data.tasks.map(t => `<li>${t}</li>`).join("");
-
-        } catch (e) {
-            console.log("ERROR:", e);
-            alert("Backend not connected ❌");
-        }
+    const response = await fetch(`${API_URL}/extract-tasks`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ notes })
     });
-});
+
+    const data = await response.json();
+
+    resultDiv.innerHTML = `
+        <h3>📌 Clean Notes</h3>
+        <pre>${data.summary}</pre>
+
+        <h3>✅ Tasks</h3>
+        <ul>
+            ${data.tasks.map(t => `<li>${t}</li>`).join("")}
+        </ul>
+    `;
+}
