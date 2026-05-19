@@ -1,4 +1,4 @@
-const API_URL = "https://algorithms-technical-occupational-sure.trycloudflare.com";
+const API_URL = "https://available-hobby-wallpaper-relate.trycloudflare.com";
 
 console.log("JS LOADED OK");
 

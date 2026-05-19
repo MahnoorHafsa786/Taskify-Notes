@@ -16,10 +16,6 @@ class NotesRequest(BaseModel):
     notes: str
 
 
-# TEMP STORAGE (so app never fails)
-memory_db = []
-
-
 @app.get("/")
 def home():
     return {"message": "Taskify Backend Running"}
@@ -27,31 +23,11 @@ def home():
 
 @app.post("/extract-tasks")
 def extract_tasks(data: NotesRequest):
-
     notes = data.notes
 
-    tasks = [s.strip() for s in notes.split(".") if s.strip()]
-    summary = "\n".join([f"• {t}" for t in tasks])
-
-    # store in memory (safe mode)
-    memory_db.append({
-        "notes": notes,
-        "summary": summary
-    })
+    # SIMPLE WORKING LOGIC (same as before)
+    tasks = [t.strip() for t in notes.split(".") if t.strip()]
 
     return {
-        "summary": summary,
         "tasks": tasks
     }
-
-
-@app.get("/history")
-def history():
-
-    return [
-        {
-            "notes": item["notes"],
-            "summary": item["summary"]
-        }
-        for item in reversed(memory_db)
-    ]
