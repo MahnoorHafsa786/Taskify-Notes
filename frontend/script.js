@@ -13,17 +13,23 @@ document.getElementById("extractBtn").addEventListener("click", async () => {
             body: JSON.stringify({ notes })
         });
 
+        if (!res.ok) {
+            throw new Error("Server error");
+        }
+
         const data = await res.json();
 
+        // 🔥 SAME OUTPUT STYLE, just cleaner checklist
         document.getElementById("result").innerHTML =
+            "<h3>Extracted Tasks</h3>" +
             data.tasks.map(task => `
-                <div class="task">
+                <label style="display:flex; gap:10px; align-items:center; margin:8px 0;">
                     <input type="checkbox">
                     <span>${task}</span>
-                </div>
+                </label>
             `).join("");
 
-    } catch (err) {
+    } catch (error) {
         document.getElementById("result").innerHTML =
             "<p style='color:red;'>Failed to fetch tasks</p>";
     }
