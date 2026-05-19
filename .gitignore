@@ -3,3 +3,5 @@ cloudflared.exe
 venv/
 __pycache__/
 *.pyc
+.env
+taskify.db
