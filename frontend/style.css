@@ -121,3 +121,47 @@ button:hover {
 
     margin-bottom: 10px;
 }
+@media (max-width: 600px) {
+
+    .container {
+        padding: 20px;
+        width: 95%;
+    }
+
+    h1 {
+        font-size: 30px;
+        line-height: 1.2;
+    }
+
+    .tagline {
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+    textarea {
+        height: 150px;
+        font-size: 15px;
+    }
+
+    button {
+        font-size: 16px;
+        padding: 12px;
+    }
+
+    .task-item {
+        align-items: flex-start;
+        flex-wrap: nowrap;
+
+        padding: 10px;
+    }
+
+    .task-item span {
+        flex: 1;
+        word-break: break-word;
+        line-height: 1.4;
+    }
+
+    input[type="checkbox"] {
+        margin-top: 4px;
+    }
+}

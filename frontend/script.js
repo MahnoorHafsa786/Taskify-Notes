@@ -18,10 +18,21 @@ document.getElementById("extractBtn").addEventListener("click", async () => {
 
         const data = await response.json();
 
+        // Handles both array and text responses safely
+        let tasks = [];
+
+        if (Array.isArray(data.tasks)) {
+            tasks = data.tasks;
+        } else {
+            tasks = data.tasks
+                .split("\n")
+                .filter(task => task.trim() !== "");
+        }
+
         document.getElementById("result").innerHTML =
             "<h2>Extracted Tasks</h2>" +
 
-            data.tasks.map(task => `
+            tasks.map(task => `
                 <div class="task-item">
                     <input type="checkbox">
                     <span>${task}</span>
