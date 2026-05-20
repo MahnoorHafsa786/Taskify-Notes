@@ -1,32 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Taskify Notes</title>
-
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <div class="app">
+    <div class="overlay">
 
-        <h1>Taskify Notes 📝</h1>
+        <div class="container">
 
-        <p class="subtitle">Turn messy notes into action ✨</p>
+            <h1>Taskify Notes 📝</h1>
 
-        <textarea id="notes" placeholder="Paste your notes here..."></textarea>
+            <p class="tagline">Turn messy notes into action ✨</p>
 
-        <button id="extractBtn">Extract Tasks</button>
+            <textarea 
+                id="notes" 
+                placeholder="Paste your notes here..."
+            ></textarea>
 
-        <div id="result"></div>
+            <button id="extractBtn">Extract Tasks</button>
+
+            <div id="result"></div>
+
+        </div>
 
     </div>
 
     <script src="script.js"></script>
 
 </body>
-
 </html>

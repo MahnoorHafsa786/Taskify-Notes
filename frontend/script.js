@@ -1,11 +1,14 @@
-const API_URL = "https://involvement-parliament-continent-consider.trycloudflare.com";";
+const API_URL = "https://tonight-noon-syndrome-becoming.trycloudflare.com";
 
 document.getElementById("extractBtn").addEventListener("click", async () => {
 
     const notes = document.getElementById("notes").value;
 
+    document.getElementById("result").innerHTML = "Processing...";
+
     try {
-        const res = await fetch(API_URL + "/extract-tasks", {
+
+        const response = await fetch(API_URL + "/extract-tasks", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -13,24 +16,22 @@ document.getElementById("extractBtn").addEventListener("click", async () => {
             body: JSON.stringify({ notes })
         });
 
-        if (!res.ok) {
-            throw new Error("Server error");
-        }
+        const data = await response.json();
 
-        const data = await res.json();
-
-        // 🔥 SAME OUTPUT STYLE, just cleaner checklist
         document.getElementById("result").innerHTML =
-            "<h3>Extracted Tasks</h3>" +
+            "<h2>Extracted Tasks</h2>" +
+
             data.tasks.map(task => `
-                <label style="display:flex; gap:10px; align-items:center; margin:8px 0;">
+                <div class="task-item">
                     <input type="checkbox">
                     <span>${task}</span>
-                </label>
+                </div>
             `).join("");
 
     } catch (error) {
+
         document.getElementById("result").innerHTML =
             "<p style='color:red;'>Failed to fetch tasks</p>";
     }
+
 });
