@@ -1,4 +1,4 @@
-const API_URL = "https://lbs-wallpaper-lopez-pointing.trycloudflare.com";
+const API_URL = "https://trinity-salary-bare-guam.trycloudflare.com";
 
 document.getElementById("extractBtn").addEventListener("click", async () => {
 
